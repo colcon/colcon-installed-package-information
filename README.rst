@@ -29,4 +29,4 @@ Supported Package Types
 This package provides extensions which are able to discover packages using the ``PrefixPathExtensionPoint`` to enumerate install prefixes, and ``FindInstalledPackagesExtensionPoint`` to enumerate names of packages installed under those prefixes.
 It can then use the colcon index in those prefixes as well as python eggs to determine dependency information and augment the packages appropriately.
 
-Support for more package databases for discovery and augmentation can be added by other packages by implementing and registering appropriate extensions in other packages.
+Support for more package databases for discovery and augmentation can be added by other packages by implementing and registering appropriate extensions.
