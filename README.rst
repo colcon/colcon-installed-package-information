@@ -20,7 +20,7 @@ Rather than attempting identification on prospective package locations, the disc
 In some cases, the database might already populate sufficient information on the descriptor to identify the package.
 For others, only presence can be known, and augmentation extensions must add additional information to the descriptor by searching for specific files throughout the prefix directory.
 
-The ``type`` attribute of an installed package works similarly to workspace packages, but must always start with ``installed.`` followed a more specific package type.
+The ``type`` attribute of an installed package works similarly to workspace packages, but must always start with ``installed.`` followed by a more specific package type.
 If more information about a package cannot be determined and it is known only to exist under a certain prefix, the time should be set to ``installed``.
 
 Supported Package Types
