@@ -13,10 +13,10 @@ Differences
 -----------
 
 Installed packages don't generally have a single directory which stores the package content and metadata.
-This set of extensions store the "prefix" under which the package resides rather than the package directory, meaning many packages will likely share the same ``path`` attribute value.
+This set of extensions store the "prefix" under which the package resides rather than the package directory (e.g. ``~/workspace/install`` instead of ``~/workspace/install/share/<package_name>`` or ``~/workspace/src/<package_name>``), meaning many packages will likely share the same ``path`` attribute value.
 
 Recursively crawling an entire system or even selective subdirectories to look for installed packages could be very slow, so this process also deviates from the Discover -> Identify -> Augment pipeline used in ``colcon-core``.
-Rather than attempting identification on prospective package locations, the discovery phase generally loads a list of installed packages from a database of some kind.
+Rather than attempting identification on prospective package locations, the discovery phase generally loads a list of installed packages from a database of some kind, such as the file-based colcon index.
 In some cases, the database might already populate sufficient information on the descriptor to identify the package.
 For others, only presence can be known, and augmentation extensions must add additional information to the descriptor by searching for specific files throughout the prefix directory.
 
