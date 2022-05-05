@@ -27,6 +27,8 @@ class PrefixPathPackageDiscovery(PackageDiscoveryExtensionPoint):
 
         for priority, prefix_path in enumerate(get_chained_prefix_path()):
             packages = find_installed_packages(Path(prefix_path))
+            if packages is None:
+                continue
             num_packages = len(packages)
             logger.debug('Found {num_packages} installed packages in '
                          '{prefix_path}'.format_map(locals()))
