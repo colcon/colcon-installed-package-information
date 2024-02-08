@@ -3,12 +3,14 @@ colcon
 deps
 descs
 iterdir
+linter
 noqa
 pathlib
 platbase
 platlib
 plugin
 purelib
+pydocstyle
 pytest
 rtype
 scott
