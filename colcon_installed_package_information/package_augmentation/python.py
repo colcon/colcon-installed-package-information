@@ -3,13 +3,17 @@
 
 import sysconfig
 
+try:
+    from importlib.metadata import Distribution
+except ImportError:
+    # TODO: Drop this with Python 3.7 support
+    from importlib_metadata import Distribution
+
 from colcon_core.package_augmentation \
     import PackageAugmentationExtensionPoint
 from colcon_core.package_augmentation.python \
     import create_dependency_descriptor
 from colcon_core.plugin_system import satisfies_version
-from pkg_resources import Environment
-from pkg_resources import Requirement
 
 
 class InstalledPythonPackageAugmentation(PackageAugmentationExtensionPoint):
@@ -32,24 +36,24 @@ class InstalledPythonPackageAugmentation(PackageAugmentationExtensionPoint):
         if not descs:
             return
 
-        environments = {}
         for desc in descs:
-            key = Requirement.parse(desc.name).key
-            for lib_dir in _enumerate_python_dirs(str(desc.path)):
-                if lib_dir not in environments:
-                    environments[lib_dir] = Environment([lib_dir])
-                dist = next(iter(environments[lib_dir][key]), None)
-                if dist:
-                    break
-            else:
+            dists = Distribution.discover(
+                path=_enumerate_python_dirs(str(desc.path)),
+                name=desc.name)
+            try:
+                dist = next(iter(dists))
+            except IndexError:
                 continue
 
-            if dist.version and not desc.metadata.get('version'):
-                desc.metadata['version'] = dist.version
+            version = dist.version
+            if version and not desc.metadata.get('version'):
+                desc.metadata['version'] = version
             desc.type = 'installed.python'
+            # TODO: We should find a clean way to exclude test-oriented extras
+            #       from this enumeration.
             desc.dependencies['run'].update(
                 create_dependency_descriptor(str(req))
-                for req in dist.requires())
+                for req in dist.requires)
 
 
 def _enumerate_python_dirs(prefix):
