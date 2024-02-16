@@ -6,7 +6,7 @@ import sysconfig
 try:
     from importlib.metadata import Distribution
 except ImportError:
-    # TODO: Drop this with Python 3.7 support
+    # TODO: Drop this when dropping Python 3.7 support
     from importlib_metadata import Distribution
 
 from colcon_core.package_augmentation \
