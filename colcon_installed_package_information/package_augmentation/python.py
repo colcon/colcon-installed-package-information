@@ -42,18 +42,21 @@ class InstalledPythonPackageAugmentation(PackageAugmentationExtensionPoint):
                 name=desc.name)
             try:
                 dist = next(iter(dists))
-            except IndexError:
+            except StopIteration:
                 continue
 
-            version = dist.version
-            if version and not desc.metadata.get('version'):
-                desc.metadata['version'] = version
+            if not desc.metadata.get('version'):
+                version = dist.version
+                if version:
+                    desc.metadata['version'] = version
             desc.type = 'installed.python'
             # TODO: We should find a clean way to exclude test-oriented extras
             #       from this enumeration.
-            desc.dependencies['run'].update(
-                create_dependency_descriptor(str(req))
-                for req in dist.requires)
+            requires = dist.requires
+            if requires is not None:
+                desc.dependencies['run'].update(
+                    create_dependency_descriptor(str(req))
+                    for req in requires)
 
 
 def _enumerate_python_dirs(prefix):
